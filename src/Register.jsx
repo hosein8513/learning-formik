@@ -1,5 +1,6 @@
 import { Field, Form, Formik, ErrorMessage, FastField } from "formik";
 import * as Yup from "yup"
+import Personalerror from "./Personalerror";
 
 
 const initialValues= {
@@ -58,15 +59,15 @@ const Register = () => {
                     <h1 className="text-[20px] font-bold">Sign In</h1>
                     <div className="flex flex-col justify-center items-center w-full">
                         <FastField type="text" placeholder="name:" className="w-7/12 bg-black/40 rounded-lg p-2" name="name" />
-                       <ErrorMessage name='name'/>
+                       <ErrorMessage name='name' component={Personalerror}/>
                     </div>
                     <div className="flex flex-col justify-center items-center w-full">
                         <FastField type="email" placeholder="email:" className="w-7/12 bg-black/40 rounded-lg p-2" name="email"/>
-                        <ErrorMessage name="email"/>
+                        <ErrorMessage name="email" component={Personalerror}/>     
                     </div>
                     <div className="flex flex-col justify-center items-center w-full">
                         <FastField type="password" placeholder="password:" className="w-7/12 bg-black/40 rounded-lg p-2" name="password" />
-                       <ErrorMessage name="password"/>
+                       <ErrorMessage name="password" component={Personalerror}/>
                     </div>
                     <button className="w-[90px] h-[45px] rounded-lg text-white bg-green-500" type="submit">Submit</button>
                 </Form>
