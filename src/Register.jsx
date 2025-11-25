@@ -1,4 +1,4 @@
-import { useFormik } from "formik";
+import { Field, Form, Formik, ErrorMessage, FastField } from "formik";
 import * as Yup from "yup"
 
 
@@ -36,37 +36,43 @@ const initialValues= {
 
 const Register = () => {
 
-    const formik = useFormik({
-        initialValues,
-        onSubmit,
-        // validate
-        validationSchema
-    })
-    console.log(formik);
+    // const formik = useFormik({
+    //     initialValues,
+    //     onSubmit,
+    //     // validate
+    //     validationSchema
+    // })
+    // console.log(formik);
 
     return (
+        <Formik
+        initialValues={initialValues}
+        onSubmit={onSubmit}
+        validationSchema={validationSchema}
+        >
         <div className="w-full h-screen bg-purple-300 flex flex-col justify-center items-center gap-4">
 
             <div className="w-3/12 h-6/12 rounded-lg bg-white/50">
 
-                <form className="w-full h-full flex flex-col justify-center items-center gap-7 rounded-lg" onSubmit={formik.handleSubmit}>
+                <Form className="w-full h-full flex flex-col justify-center items-center gap-7 rounded-lg">
                     <h1 className="text-[20px] font-bold">Sign In</h1>
                     <div className="flex flex-col justify-center items-center w-full">
-                        <input type="text" placeholder="name:" className="w-7/12 bg-black/40 rounded-lg p-2" name="name" {...formik.getFieldProps('name')} />
-                        {formik.errors.name && formik.touched.name ? <span className="text-[15px] text-center text-red-500">{formik.errors.name}</span> : ''}
+                        <FastField type="text" placeholder="name:" className="w-7/12 bg-black/40 rounded-lg p-2" name="name" />
+                       <ErrorMessage name='name'/>
                     </div>
                     <div className="flex flex-col justify-center items-center w-full">
-                        <input type="email" placeholder="email:" className="w-7/12 bg-black/40 rounded-lg p-2" name="email"{...formik.getFieldProps('email')} />
-                        {formik.errors.email  ? <span className="text-[15px] text-center text-red-500">{formik.errors.email}</span> : ''}
+                        <FastField type="email" placeholder="email:" className="w-7/12 bg-black/40 rounded-lg p-2" name="email"/>
+                        <ErrorMessage name="email"/>
                     </div>
                     <div className="flex flex-col justify-center items-center w-full">
-                        <input type="password" placeholder="password:" className="w-7/12 bg-black/40 rounded-lg p-2" name="password" {...formik.getFieldProps('password')} />
-                        {formik.errors.password ? <span className="text-[15px] text-center text-red-500">{formik.errors.password}</span> : ''}
+                        <FastField type="password" placeholder="password:" className="w-7/12 bg-black/40 rounded-lg p-2" name="password" />
+                       <ErrorMessage name="password"/>
                     </div>
                     <button className="w-[90px] h-[45px] rounded-lg text-white bg-green-500" type="submit">Submit</button>
-                </form>
+                </Form>
             </div>
         </div>
+        </Formik>
     );
 };
 
