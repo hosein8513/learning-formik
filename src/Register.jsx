@@ -63,10 +63,16 @@ const Register = () => {
             initialValues={initialValues}
             onSubmit={onSubmit}
             validationSchema={validationSchema}
+            // validateOnBlur={false}
+            // validateOnChange={false}
         >
-            <div className="w-full h-screen bg-purple-300 flex flex-col justify-center items-center gap-4">
+           {formik=>{
+            console.log(formik);
+            return(
+            
+             <div className="w-full h-auto bg-purple-300 flex flex-col justify-center items-center gap-4">
 
-                <div className="w-3/12 h-10/12 rounded-lg bg-white/50">
+                <div className="w-3/12 h-auto rounded-lg bg-white/50 p-4">
 
                     <Form className="w-full h-full flex flex-col justify-center items-center gap-7 rounded-lg">
                         <h1 className="text-[20px] font-bold">Sign In</h1>
@@ -105,10 +111,16 @@ const Register = () => {
                           {props=><Favorites {...props}/>}
                           </FieldArray>
                         </div>
+                        <button className="w-[90px] h-[45px] rounded-lg text-white bg-blue-500" type="button" onClick={()=>formik.validateForm()}>form verify</button>
+                        <button className="w-[90px] h-[45px] rounded-lg text-white bg-orange-500" type="button" onClick={()=>formik.setTouched({
+                            name:true,
+                            email:true
+                        })}>form touch</button>
                         <button className="w-[90px] h-[45px] rounded-lg text-white bg-green-500" type="submit">Submit</button>
                     </Form>
                 </div>
             </div>
+           )}}
         </Formik>
     );
 };
