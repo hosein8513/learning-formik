@@ -12,11 +12,14 @@ const initialValues = {
         city: '',
         postalcode: ''
     },
-    phone:['',''],
-    favorites:['']
+    phone: ['', ''],
+    favorites: ['']
 }
-const onSubmit = value => {
+const onSubmit = (value, sub) => {
     console.log(value);
+    setTimeout(() => {
+        sub.setSubmitting(false)
+    }, 5000);
 
 }
 // const  validate = value => {
@@ -42,8 +45,8 @@ const validationSchema = Yup.object({
         city: Yup.string().required("please fill this part"),
         postalcode: Yup.string().required("please fill this part")
     }),
-    phone:Yup.array().of(Yup.string().required("please fill this part")),
-    favorites:Yup.array().of(Yup.string().required("please fill this part"))
+    phone: Yup.array().of(Yup.string().required("please fill this part")),
+    favorites: Yup.array().of(Yup.string().required("please fill this part"))
 })
 
 
@@ -63,64 +66,70 @@ const Register = () => {
             initialValues={initialValues}
             onSubmit={onSubmit}
             validationSchema={validationSchema}
-            // validateOnBlur={false}
-            // validateOnChange={false}
+            validateOnMount
+        // validateOnBlur={false}
+        // validateOnChange={false}
         >
-           {formik=>{
-            console.log(formik);
-            return(
-            
-             <div className="w-full h-auto bg-purple-300 flex flex-col justify-center items-center gap-4">
+            {formik => {
+                console.log(formik);
+                return (
 
-                <div className="w-3/12 h-auto rounded-lg bg-white/50 p-4">
+                    <div className="w-full h-auto bg-purple-300 flex flex-col justify-center items-center gap-4">
 
-                    <Form className="w-full h-full flex flex-col justify-center items-center gap-7 rounded-lg">
-                        <h1 className="text-[20px] font-bold">Sign In</h1>
-                        <div className="flex flex-col justify-center items-center w-full">
-                            <FastField type="text" placeholder="name:" className="w-7/12 bg-black/40 rounded-lg p-2" name="name" />
-                            <ErrorMessage name='name' component={Personalerror} />
+                        <div className="w-3/12 h-auto rounded-lg bg-white/50 p-4">
+
+                            <Form className="w-full h-full flex flex-col justify-center items-center gap-7 rounded-lg">
+                                <h1 className="text-[20px] font-bold">Sign In</h1>
+                                <div className="flex flex-col justify-center items-center w-full">
+                                    <FastField type="text" placeholder="name:" className="w-7/12 bg-black/40 rounded-lg p-2" name="name" />
+                                    <ErrorMessage name='name' component={Personalerror} />
+                                </div>
+                                <div className="flex flex-col justify-center items-center w-full">
+                                    <FastField type="email" placeholder="email:" className="w-7/12 bg-black/40 rounded-lg p-2" name="email" />
+                                    <ErrorMessage name="email" component={Personalerror} />
+                                </div>
+                                <div className="flex flex-col justify-center items-center w-full">
+                                    <FastField type="password" placeholder="password:" className="w-7/12 bg-black/40 rounded-lg p-2" name="password" />
+                                    <ErrorMessage name="password" component={Personalerror} />
+                                </div>
+                                <div className="flex flex-col justify-center items-center w-full">
+                                    <FastField type="text" placeholder="city:" className="w-7/12 bg-black/40 rounded-lg p-2" name="address.city" />
+                                    <ErrorMessage name="address.city" component={Personalerror} />
+                                </div>
+                                <div className="flex flex-col justify-center items-center w-full">
+                                    <FastField type="text" placeholder="postalcode:" className="w-7/12 bg-black/40 rounded-lg p-2" name="address.postalcode" />
+                                    <ErrorMessage name="address.postalcode" component={Personalerror} />
+                                </div>
+                                <div className="flex w-full">
+                                    <div className="flex flex-col justify-center items-center w-9/12">
+                                        <FastField type="text" placeholder="phone:" className="w-9/12 bg-black/40 rounded-lg p-2" name="phone[0]" />
+                                        <ErrorMessage name="phone[0]" component={Personalerror} />
+                                    </div>
+                                    <div className="flex flex-col justify-center items-center w-9/12">
+                                        <FastField type="text" placeholder="telephone:" className="w-9/12 bg-black/40 rounded-lg p-2" name="phone[1]" />
+                                        <ErrorMessage name="phone[1]" component={Personalerror} />
+                                    </div>
+                                </div>
+                                <div className="flex flex-col justify-center items-center w-full gap-2">
+                                    <FieldArray type="text" className="w-full bg-black/40 rounded-lg p-2" name="favorites">
+                                        {props => <Favorites {...props} />}
+                                    </FieldArray>
+                                </div>
+                                <button className="w-[90px] h-[45px] rounded-lg text-white bg-blue-500" type="button" onClick={() => formik.validateForm()}>form verify</button>
+                                <button className="w-[90px] h-[45px] rounded-lg text-white bg-orange-500" type="button" onClick={() => formik.setTouched({
+                                    name: true,
+                                    email: true
+                                })}>form touch</button>
+                                <button className="w-[90px] h-[45px] rounded-lg text-white bg-green-500 cursor-pointer disabled:bg-green-500/30" type="submit" disabled={!formik.isValid||formik.isSubmitting}>
+                                    {formik.isSubmitting ? (
+                                       "Loading..."
+                                    ) : ("Submit")}
+                                </button>
+                            </Form>
                         </div>
-                        <div className="flex flex-col justify-center items-center w-full">
-                            <FastField type="email" placeholder="email:" className="w-7/12 bg-black/40 rounded-lg p-2" name="email" />
-                            <ErrorMessage name="email" component={Personalerror} />
-                        </div>
-                        <div className="flex flex-col justify-center items-center w-full">
-                            <FastField type="password" placeholder="password:" className="w-7/12 bg-black/40 rounded-lg p-2" name="password" />
-                            <ErrorMessage name="password" component={Personalerror} />
-                        </div>
-                        <div className="flex flex-col justify-center items-center w-full">
-                            <FastField type="text" placeholder="city:" className="w-7/12 bg-black/40 rounded-lg p-2" name="address.city" />
-                            <ErrorMessage name="address.city" component={Personalerror} />
-                        </div>
-                        <div className="flex flex-col justify-center items-center w-full">
-                            <FastField type="text" placeholder="postalcode:" className="w-7/12 bg-black/40 rounded-lg p-2" name="address.postalcode" />
-                            <ErrorMessage name="address.postalcode" component={Personalerror} />
-                        </div>
-                        <div className="flex w-full">
-                        <div className="flex flex-col justify-center items-center w-9/12">
-                            <FastField type="text" placeholder="phone:" className="w-9/12 bg-black/40 rounded-lg p-2" name="phone[0]" />
-                            <ErrorMessage name="phone[0]" component={Personalerror} />
-                        </div>
-                        <div className="flex flex-col justify-center items-center w-9/12">
-                            <FastField type="text" placeholder="telephone:" className="w-9/12 bg-black/40 rounded-lg p-2" name="phone[1]" />
-                            <ErrorMessage name="phone[1]" component={Personalerror} />
-                        </div>
-                        </div>
-                         <div className="flex flex-col justify-center items-center w-full gap-2">
-                          <FieldArray type="text" className="w-full bg-black/40 rounded-lg p-2" name="favorites">
-                          {props=><Favorites {...props}/>}
-                          </FieldArray>
-                        </div>
-                        <button className="w-[90px] h-[45px] rounded-lg text-white bg-blue-500" type="button" onClick={()=>formik.validateForm()}>form verify</button>
-                        <button className="w-[90px] h-[45px] rounded-lg text-white bg-orange-500" type="button" onClick={()=>formik.setTouched({
-                            name:true,
-                            email:true
-                        })}>form touch</button>
-                        <button className="w-[90px] h-[45px] rounded-lg text-white bg-green-500" type="submit">Submit</button>
-                    </Form>
-                </div>
-            </div>
-           )}}
+                    </div>
+                )
+            }}
         </Formik>
     );
 };
