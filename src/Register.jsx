@@ -2,7 +2,7 @@ import { Field, Form, Formik, ErrorMessage, FastField, FieldArray } from "formik
 import * as Yup from "yup"
 import Personalerror from "./Personalerror";
 import Favorites from "./Favorites";
-
+import { useEffect, useState } from "react";
 
 const initialValues = {
     name: '',
@@ -19,6 +19,7 @@ const onSubmit = (value, sub) => {
     console.log(value);
     setTimeout(() => {
         sub.setSubmitting(false)
+        sub.resetForm()
     }, 5000);
 
 }
@@ -52,6 +53,8 @@ const validationSchema = Yup.object({
 
 
 const Register = () => {
+    const [data, setdata] = useState(null)
+    const [myvalue, setmyvalue] = useState(null)
 
     // const formik = useFormik({
     //     initialValues,
@@ -60,21 +63,32 @@ const Register = () => {
     //     validationSchema
     // })
     // console.log(formik);
+    const handlesave = (formik) => {
+        localStorage.setItem('savedata', JSON.stringify(formik.values))
+    }
+    const handlegetdata = () => {
+        setmyvalue(data)
+    }
+    useEffect(() => {
+        const localsave = JSON.parse(localStorage.getItem('savedata'));
+        setdata(localsave)
 
+    }, [])
     return (
         <Formik
-            initialValues={initialValues}
+            initialValues={myvalue || initialValues}
             onSubmit={onSubmit}
             validationSchema={validationSchema}
             validateOnMount
+            enableReinitialize
         // validateOnBlur={false}
         // validateOnChange={false}
         >
             {formik => {
-                console.log(formik);
+
                 return (
 
-                    <div className="w-full h-auto bg-purple-300 flex flex-col justify-center items-center gap-4">
+                    <div className="w-full h-screen bg-purple-300 flex flex-col justify-center items-center gap-4">
 
                         <div className="w-3/12 h-auto rounded-lg bg-white/50 p-4">
 
@@ -115,14 +129,20 @@ const Register = () => {
                                         {props => <Favorites {...props} />}
                                     </FieldArray>
                                 </div>
-                                <button className="w-[90px] h-[45px] rounded-lg text-white bg-blue-500" type="button" onClick={() => formik.validateForm()}>form verify</button>
+                                {/* <button className="w-[90px] h-[45px] rounded-lg text-white bg-blue-500" type="button" onClick={() => formik.validateForm()}>form verify</button>
                                 <button className="w-[90px] h-[45px] rounded-lg text-white bg-orange-500" type="button" onClick={() => formik.setTouched({
                                     name: true,
                                     email: true
-                                })}>form touch</button>
-                                <button className="w-[90px] h-[45px] rounded-lg text-white bg-green-500 cursor-pointer disabled:bg-green-500/30" type="submit" disabled={!formik.isValid||formik.isSubmitting}>
+                                })}>form touch</button> */}
+                                {formik.isValid ? (
+                                    <button className="w-[140px] h-[45px] rounded-lg text-white bg-amber-500 cursor-pointer" type="button" onClick={() => handlesave(formik)}>Save in System</button>
+                                ) : null}
+                                {data ? (
+                                    <button className="w-[140px] h-[45px] rounded-lg text-white bg-indigo-500 cursor-pointer" onClick={handlegetdata} type="button">Get last Data</button>
+                                ) : null}
+                                <button className="w-[90px] h-[45px] rounded-lg text-white bg-green-500 cursor-pointer disabled:bg-green-500/30" type="submit" disabled={!formik.isValid || formik.isSubmitting}>
                                     {formik.isSubmitting ? (
-                                       "Loading..."
+                                        "Loading..."
                                     ) : ("Submit")}
                                 </button>
                             </Form>
