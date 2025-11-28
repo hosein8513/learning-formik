@@ -1,8 +1,10 @@
-import { Field, Form, Formik, ErrorMessage, FastField, FieldArray } from "formik";
+import { Field, Form, Formik, ErrorMessage, FastField, FieldArray, FormikContext } from "formik";
 import * as Yup from "yup"
 import Personalerror from "./Personalerror";
 import Favorites from "./Favorites";
 import { useEffect, useState } from "react";
+import Formikcontrol from "../formikelement/Formikcontrol";
+
 
 const initialValues = {
     name: '',
@@ -13,7 +15,8 @@ const initialValues = {
         postalcode: ''
     },
     phone: ['', ''],
-    favorites: ['']
+    favorites: [''],
+    skills:[]
 }
 const onSubmit = (value, sub) => {
     console.log(value);
@@ -55,6 +58,27 @@ const validationSchema = Yup.object({
 const Register = () => {
     const [data, setdata] = useState(null)
     const [myvalue, setmyvalue] = useState(null)
+    const edu =[
+{key:1 ,value:"ابتدایی"},
+{key:2 ,value:"سیکل"},
+{key:3 ,value:"دیپلم"},
+{key:4, value:"لیسانس"}
+
+
+    ]
+    const gender =[
+{key:1 ,value:"مرد"},
+{key:2 ,value:"زن"}
+
+    ]
+    const skills =[
+        {key:1,value:"HTML"},
+        {key:2,value:"CSS"},
+        {key:3,value:"JS"},
+        {key:4,value:"REACT"}
+    ]
+
+    
 
     // const formik = useFormik({
     //     initialValues,
@@ -88,41 +112,76 @@ const Register = () => {
 
                 return (
 
-                    <div className="w-full h-screen bg-purple-300 flex flex-col justify-center items-center gap-4">
+                    <div className="w-full min-h-screen overflow-scroll bg-purple-300 flex flex-col justify-center items-center gap-4">
 
                         <div className="w-3/12 h-auto rounded-lg bg-white/50 p-4">
 
-                            <Form className="w-full h-full flex flex-col justify-center items-center gap-7 rounded-lg">
+                            <Form className="w-full h-full flex flex-col justify-center items-center gap-4 rounded-lg">
                                 <h1 className="text-[20px] font-bold">Sign In</h1>
-                                <div className="flex flex-col justify-center items-center w-full">
-                                    <FastField type="text" placeholder="name:" className="w-7/12 bg-black/40 rounded-lg p-2" name="name" />
-                                    <ErrorMessage name='name' component={Personalerror} />
-                                </div>
-                                <div className="flex flex-col justify-center items-center w-full">
-                                    <FastField type="email" placeholder="email:" className="w-7/12 bg-black/40 rounded-lg p-2" name="email" />
-                                    <ErrorMessage name="email" component={Personalerror} />
-                                </div>
-                                <div className="flex flex-col justify-center items-center w-full">
-                                    <FastField type="password" placeholder="password:" className="w-7/12 bg-black/40 rounded-lg p-2" name="password" />
-                                    <ErrorMessage name="password" component={Personalerror} />
-                                </div>
-                                <div className="flex flex-col justify-center items-center w-full">
-                                    <FastField type="text" placeholder="city:" className="w-7/12 bg-black/40 rounded-lg p-2" name="address.city" />
-                                    <ErrorMessage name="address.city" component={Personalerror} />
-                                </div>
-                                <div className="flex flex-col justify-center items-center w-full">
-                                    <FastField type="text" placeholder="postalcode:" className="w-7/12 bg-black/40 rounded-lg p-2" name="address.postalcode" />
-                                    <ErrorMessage name="address.postalcode" component={Personalerror} />
-                                </div>
+                               
+                                <Formikcontrol
+                                control="input"
+                                type="text"
+                                name="name"
+                                label="name"
+                                />
+                         
+                                <Formikcontrol
+                                control="input"
+                                type="email"
+                                name="email"
+                                label="email"
+                                />
+                                <Formikcontrol
+                                control="input"
+                                type="password"
+                                name="password"
+                                label="password"
+                                />
+                                <Formikcontrol
+                                control="select"
+                                name="edu"
+                                label="edu"
+                                options={edu}
+                                />
+                                <Formikcontrol
+                                control="radio"
+                                name="gender"
+                                label="gender"
+                                options={gender}
+                                />
+                                <Formikcontrol
+                                control="checkbox"
+                                name="skills"
+                                label="skills"
+                                options={skills}
+                                />
+                                 <Formikcontrol
+                                control="input"
+                                type="text"
+                                name="address.city"
+                                label="city"
+                                />
+                                <Formikcontrol
+                                control="input"
+                                type="text"
+                                name="address.postalcode"
+                                label="postalcode"
+                                />
                                 <div className="flex w-full">
-                                    <div className="flex flex-col justify-center items-center w-9/12">
-                                        <FastField type="text" placeholder="phone:" className="w-9/12 bg-black/40 rounded-lg p-2" name="phone[0]" />
-                                        <ErrorMessage name="phone[0]" component={Personalerror} />
-                                    </div>
-                                    <div className="flex flex-col justify-center items-center w-9/12">
-                                        <FastField type="text" placeholder="telephone:" className="w-9/12 bg-black/40 rounded-lg p-2" name="phone[1]" />
-                                        <ErrorMessage name="phone[1]" component={Personalerror} />
-                                    </div>
+                                <Formikcontrol
+                                control="input"
+                                type="text"
+                                name="phone[0]"
+                                label="phone"
+                                />
+                                 <Formikcontrol
+                                control="input"
+                                type="text"
+                                name="phone[1]"
+                                label="telephone"
+                                />
+                                  
                                 </div>
                                 <div className="flex flex-col justify-center items-center w-full gap-2">
                                     <FieldArray type="text" className="w-full bg-black/40 rounded-lg p-2" name="favorites">

@@ -9,7 +9,8 @@ const Favorites = (props) => {
            
             {favorites.map((f,i)=>(
                 <div key={i} className='relative'>
-                    <Field type="text" className="w-full bg-black/40 rounded-lg p-2" name={`favorites[${i}]`} placeholder="favorites"/>
+                    <label>favorites</label>
+                    <Field type="text" className="w-full bg-black/40 rounded-lg p-2" name={`favorites[${i}]`}/>
                     {
                         favorites.length > 1 ?(
                             <i className="fas fa-trash text-red-600  absolute top-3 right-1" onClick={()=>remove(i)}></i>
